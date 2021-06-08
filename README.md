@@ -5,5 +5,5 @@ Algorithm:
 - NMF decomposition in N components (KL)
 - masking
 - clustering in K sources
-- reconstrucation (phase can be recovered by iteration)
+- ISTFT reconstruction (phase can be recovered by iteration)
 
