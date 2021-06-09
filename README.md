@@ -5,5 +5,7 @@ Algorithm:
 - NMF decomposition in N components (KL)
 - masking
 - clustering in K sources
-- reconstrucation
+- standardisation  of temporal activations
+- clustering of temporal activations in K sources
+- ISTFT reconstruction
 
