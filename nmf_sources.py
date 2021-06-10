@@ -6,11 +6,12 @@ import librosa as lr
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
+import sys
 
 FFT_SIZE = 2048
 HOPLEN = 256
-COMPONENTS = 32 # NMF components
-SOURCES = 4 # K in KMeans 
+# COMPONENTS = 32 # NMF components
+# SOURCES = 4 # K in KMeans 
 
 # Given a complex signal, find its polar coordinates
 def car2pol(sig):
@@ -54,20 +55,26 @@ def get_sources (mix, nsources=4, components=32, fft_size=4096, hoplen=512):
     return W, H, clusters.labels_, sources
 
 if __name__ == "__main__":
-    np.seterr(divide='ignore', invalid='ignore')
+    if (len(sys.argv) != 4):
+        print ("syntax: nmf_sources file.wav ncomp nsrc")
+    else:
+        FILE = sys.argv[1]
+        COMPONENTS = int(sys.argv[2])
+        SOURCES = int(sys.argv[3])
+        np.seterr(divide='ignore', invalid='ignore')
 
-    mix, sr = sf.read ('samples/Gambale_cut.wav')
-    print ('total samples: ', len (mix))
-    print ('sources      : ', SOURCES)
-    print ('components   : ', COMPONENTS)
+        mix, sr = sf.read (FILE)
+        print ('total samples: ', len (mix))
+        print ('sources      : ', SOURCES)
+        print ('components   : ', COMPONENTS)
 
-    W, H, labels, sources = get_sources (mix, nsources=SOURCES, components=COMPONENTS,
-        fft_size=FFT_SIZE, hoplen=HOPLEN)        
-    print ('W            : ', W.shape)
-    print ('H            : ', H.shape)
-    print ('labels       : ', labels)
-    for s in range (SOURCES):
-        sf.write ('source_' + str (s) + '.wav', sources[s], sr)
+        W, H, labels, sources = get_sources (mix, nsources=SOURCES, components=COMPONENTS,
+            fft_size=FFT_SIZE, hoplen=HOPLEN)        
+        print ('W            : ', W.shape)
+        print ('H            : ', H.shape)
+        print ('labels       : ', labels)
+        for s in range (SOURCES):
+            sf.write ('source_' + str (s) + '.wav', sources[s], sr)
 
         
 
