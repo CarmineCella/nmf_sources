@@ -7,8 +7,8 @@ from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 
-FFT_SIZE = 4096
-HOPLEN = 512
+FFT_SIZE = 2048
+HOPLEN = 256
 COMPONENTS = 32 # NMF components
 SOURCES = 4 # K in KMeans 
 
@@ -42,10 +42,8 @@ def get_sources (mix, nsources=4, components=32, fft_size=4096, hoplen=512):
 
     # assignment and reconstruction
     for s in range (0, nsources): 
-        print ("source ", s)
         comp = np.zeros (specgram.shape)
         for k in range (0, components):
-            print ("comp ", k)
             if clusters.labels_[k] == s:
                 comp = comp + comps[:, :, k]
 
@@ -58,7 +56,7 @@ def get_sources (mix, nsources=4, components=32, fft_size=4096, hoplen=512):
 if __name__ == "__main__":
     np.seterr(divide='ignore', invalid='ignore')
 
-    mix, sr = sf.read ('samples/jungle1.wav')
+    mix, sr = sf.read ('samples/Gambale_cut.wav')
     print ('total samples: ', len (mix))
     print ('sources      : ', SOURCES)
     print ('components   : ', COMPONENTS)
